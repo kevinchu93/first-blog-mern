@@ -5,9 +5,9 @@
     <body>
         <nav><% include partials/nav.ejs %></nav>
         <div class="posts">
-            <h2><%= post.title %></h2>
-            <p><%= post.body %></p>
-            <p>Author: <%= post.author %></p>
+            <h2><%= post[0].title %></h2>
+            <p><%= post[0].body %></p>
+            <p>Author: <%= post[0].author %></p>
         </div>
     </body>
 </html>

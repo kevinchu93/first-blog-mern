@@ -7,24 +7,17 @@ var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern');
 
-// Create Schema
-var postSchema = new mongoose.Schema({
-    title: String,
-    author: String,
-    body: String
-});
-    
-var Post = mongoose.model('Post', postSchema);
+var Post = require('./models/post.js');
+
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
-
-var data = require('./models/post');
 
 app.use(express.static('public'));
 
 app.set('view engine', 'ejs');
+
 app.get('/', function(req, res){
-    res.render('index');
+    res.render('posts');
 });
 
 app.get('/posts', function(req, res){
@@ -36,8 +29,10 @@ app.get('/posts', function(req, res){
 });
 
 app.get('/posts/:post_id', function(req, res){
-    res.render('post_detail', {post: data[req.params.post_id]});
-    console.log(req.params.post_id);
+    Post.find({_id: req.params.post_id}, function(err, data){
+        if (err) throw (err);
+        res.render('post_detail', {post: data});
+    });
 });
 
     
