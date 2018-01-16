@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <% include partials/head.ejs %>
+    </head>
+    <body>
+        <nav><% include partials/nav.ejs %></nav>
+        <div class="posts">
+            <h1><%= post.title %></h1>
+            <p><%= post.post %></p>
+            <p>Author: <%= post.author %></p>
+        </div>
+    </body>
+</html>

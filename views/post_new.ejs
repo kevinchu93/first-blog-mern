@@ -1,0 +1,21 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <nav><% include partials/nav.ejs %></nav>
+
+        <form id="post-new" method="POST" action="/post_new">
+            <div>
+            <label for="title">Title</label>
+            <input type="text" name="title">
+            </div>
+            <div>
+            <input type="text" name="post">
+            </div>
+            <div>
+            <input type="submit" value="Submit">
+            
+            </div>
+        </form>
+    </body>
+</html>
