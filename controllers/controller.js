@@ -1,6 +1,7 @@
 const bodyParser    = require('body-parser');
 const mongoose      = require('mongoose');
-const Post          = require('../models/post.js');
+const Post          = require('../models/post');
+const service       = require('../services/service');
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -8,23 +9,26 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern', { useMongoClient: true });
 
+const dataService = new service();
 module.exports = app => {
 
-    app.get('/', function(req, res){
-        Post.find({}, function(err, data){
-            if (err) throw (err);
-            res.render('posts', {posts: data});
-        });
-    });
+//    const homeFunc = (req, res) => {
+//        Post.find({}, function(err, data){
+//            if (err) throw (err);
+//            res.render('posts', {posts: data});
+//        });
+//    };
+    
+    const homeFunc = (req, res) => {
+        const data = dataService.getAllPosts();
+        console.log(data);
+        res.render('posts', {posts: data});
+    };
 
+    app.get('/', homeFunc);
 
-    app.get('/posts', function(req, res){
-        //get data from mongodb and pass to view
-        Post.find({}, function(err, data){
-            if (err) throw (err);
-            res.render('posts', {posts: data});
-        });
-    });
+    
+    app.get('/posts', homeFunc);
 
     app.get('/posts/:post_id', function(req, res){
         Post.find({_id: req.params.post_id}, function(err, data){
@@ -32,8 +36,6 @@ module.exports = app => {
             res.render('post_detail', {post: data});
         });
     });
-
-        
 
     app.get('/post_new', function(req, res){
         res.render('post_new');
