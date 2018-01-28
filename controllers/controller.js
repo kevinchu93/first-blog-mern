@@ -1,21 +1,14 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const Post = require('./models/post.js');
+const bodyParser    = require('body-parser');
+const mongoose      = require('mongoose');
+const Post          = require('../models/post.js');
 
-const app = express();
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 // Connect to database
 mongoose.Promise = require('bluebird');
-mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern');
+mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern', { useMongoClient: true });
 
 module.exports = app => {
-
-    app.use(express.static('public'));
-
-    app.set('view engine', 'ejs');
-
 
     app.get('/', function(req, res){
         Post.find({}, function(err, data){
