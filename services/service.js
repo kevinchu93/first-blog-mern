@@ -8,24 +8,20 @@ mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern', 
 
 class service {
 
-    getAllPosts() {
-        let info = 'hello';
-        //promise
-        let transferData = function() {
-            return new Promise((resolve, reject) => {
-
-                Post.find({}, function(err, data) {
-                    if (err) throw (err);
-                    info = data;
-                    console.log(data);
-                });
-                resolve();
-            });
-        };
-        transferData().then(() => {
-            return info;
+    promiseFind() {
+        Post.find({}, function(err, data) {
+            if (err) throw (err);
+            Data = data;
+            return Promise.resolve();
         });
     };
+
+    getAllPosts() {
+        promiseFind().then(() => {
+            return Data
+        });
+    };
+
 };
 
 

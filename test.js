@@ -1,13 +1,17 @@
-(helloCatAsync(function(result) {
-    console.log(result);
-    test = result;
-}));
-
-function helloCatAsync(callback) {
-        callback('Nya');
+function promiseHi(name) {
+    return Promise.resolve(`hi ${name}`);
 }
 
-setInterval(function() {
-    console.log(test);
-}, 1000);
+let data = 1;
 
+promiseHi('kevin').then(message => {
+    data = 5;
+    console.log(data);
+});
+
+console.log(data);
+
+
+setInterval(function() {
+    console.log(data);
+}, 2000);
