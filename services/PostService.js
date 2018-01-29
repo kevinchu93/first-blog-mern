@@ -13,7 +13,8 @@ class PostService {
         return Post.find({});
     };
 
-    postNewPost(newPost) {
+    postNewPost(title, author, body) {
+        const newPost = new Post({title: title, author: author, body: body});
         return Post(newPost).save();
     };
 };

@@ -18,7 +18,7 @@ router.get(['/', '/posts'], (req, res) => {
 });
 
 router.get('/posts/:post_id', (req, res) => {
-    postService.getOnePost(req.params.post_id).then((post) => {
+    postService.getOnePost(req.params.post_id).then(post => {
         res.render('post_detail', {post: post});
     }).catch((err) => {
         res.status(503).send(err.message)
@@ -30,8 +30,7 @@ router.get('/post_new', (req, res) => {
 });
 
 router.post('/post_new', urlencodedParser, (req, res) => {
-    // get data from view and add to mongodb
-    postService.postNewPost(req.body).then((post) => {
+    postService.postNewPost(req.body.title, req.body.author, req.body.body).then(post => {
         res.redirect('posts');
     }).catch((err) => {
         res.status(503).send(err.message)
