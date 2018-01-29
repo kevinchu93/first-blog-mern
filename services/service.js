@@ -6,16 +6,10 @@ mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern', { useMongoClient: true });
 
 
-class service {
+class Service {
 
-    constructor()
-    {
-        this.Data = {};
-    }
-
-    
-    getOnePost(req) {
-        return Post.find({_id: req.params.post_id});
+    getOnePost(post_id) {
+        return Post.find({_id: post_id});
     };
 
 
@@ -23,12 +17,12 @@ class service {
         return Post.find({});
     };
 
-    postNewPost(req) {
-        return Post(req.body).save();
+    postNewPost(newPost) {
+        return Post(newPost).save();
     };
 
 };
 
 
 
-module.exports = service;
+module.exports = Service;

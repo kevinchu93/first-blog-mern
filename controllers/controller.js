@@ -10,32 +10,31 @@ mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern', { useMongoClient: true });
 
 const dataService = new service();
-module.exports = app => {
+module.exports = (app) => {
     
 
 
-    app.get(['/', '/posts'], function(req, res) {
+    app.get(['/', '/posts'], (req, res) => {
         dataService.getAllPosts().then(posts => {
-            console.log(posts);
             res.render('posts', {posts: posts});
-        }).catch({
+        })/*.catch(
             res.status(500);
-        });
+        );*/
     });
     
-    app.get('/posts/:post_id', function(req, res){
-        dataService.getOnePost(req).then((post) => {
+    app.get('/posts/:post_id', (req, res) => {
+        dataService.getOnePost(req.params.post_id).then((post) => {
             res.render('post_detail', {post: post});
         });
     });
 
-    app.get('/post_new', function(req, res){
+    app.get('/post_new', (req, res) => {
         res.render('post_new');
     });
 
-    app.post('/post_new', urlencodedParser, function(req, res){
+    app.post('/post_new', urlencodedParser, (req, res) => {
         // get data from view and add to mongodb
-        const newPost = dataService.postNewPost(req).then((post) => {
+        dataService.postNewPost(req.body).then((post) => {
             res.redirect('posts');
         });
     });
