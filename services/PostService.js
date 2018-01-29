@@ -1,8 +1,5 @@
-const mongoose      = require('mongoose');
+const mongoose      = require('../mongoose');
 const Post          = require('../models/Post');
-
-mongoose.Promise = require('bluebird');
-mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern', { useMongoClient: true });
 
 class PostService {
     getOnePost(post_id) {
