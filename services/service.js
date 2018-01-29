@@ -8,17 +8,24 @@ mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern', 
 
 class service {
 
+    constructor()
+    {
+        this.Data = {};
+    }
+
     promiseFind() {
-        Post.find({}, function(err, data) {
+        Post.find({}, (err, data) => {
             if (err) throw (err);
-            Data = data;
-            return Promise.resolve();
+            this.Data = data;
+            console.log('this should be first');
         });
+        return Promise.resolve();
     };
 
     getAllPosts() {
-        promiseFind().then(() => {
-            return Data
+        this.promiseFind().then(() => {
+            console.log('this should be second');
+            return this.Data
         });
     };
 
@@ -28,6 +35,7 @@ class service {
 const dataService = new service();
 
 const result = dataService.getAllPosts();
+console.log('this should be last');
 console.log(result);
 
 module.exports = service;
