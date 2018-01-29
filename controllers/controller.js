@@ -18,12 +18,25 @@ module.exports = app => {
 //            res.render('posts', {posts: data});
 //        });
 //    };
+    //
+    //
+/*    const homeFunc = (req, res) => {
+        Post.find({}).then(posts => {
+            console.log(posts);
+            res.render('posts', {posts: posts});
+        });
+    };
+
+    */
+    
     
     const homeFunc = (req, res) => {
-        const data = dataService.getAllPosts();
-        console.log(data);
+        service.getAllPosts().then(posts => {
+        console.log(posts);
         res.render('posts', {posts: data});
+        });
     };
+
 
     app.get('/', homeFunc);
 

@@ -13,6 +13,8 @@ class service {
         this.Data = {};
     }
 
+    
+
     promiseFind() {
         Post.find({}, (err, data) => {
             if (err) throw (err);
@@ -23,12 +25,8 @@ class service {
     };
 
     getAllPosts() {
-        this.promiseFind().then(() => {
-            console.log('this should be second');
-            return this.Data
-        });
+        return Post.find({});
     };
-
 };
 
 
