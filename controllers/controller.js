@@ -17,9 +17,9 @@ module.exports = (app) => {
     app.get(['/', '/posts'], (req, res) => {
         dataService.getAllPosts().then(posts => {
             res.render('posts', {posts: posts});
-        })/*.catch(
+        }).catch(
             res.status(500);
-        );*/
+        );
     });
     
     app.get('/posts/:post_id', (req, res) => {
@@ -39,13 +39,4 @@ module.exports = (app) => {
         });
     });
 
-/*
-    app.post('/post_new', urlencodedParser, function(req, res){
-        // get data from view and add to mongodb
-        const newPost = Post(req.body).save(function(err, data){
-            if (err) throw (err);
-            res.redirect('posts');
-        });
-    });
-*/
 };
