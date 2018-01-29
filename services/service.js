@@ -14,26 +14,21 @@ class service {
     }
 
     
-
-    promiseFind() {
-        Post.find({}, (err, data) => {
-            if (err) throw (err);
-            this.Data = data;
-            console.log('this should be first');
-        });
-        return Promise.resolve();
+    getOnePost(req) {
+        return Post.find({_id: req.params.post_id});
     };
+
 
     getAllPosts() {
         return Post.find({});
     };
+
+    postNewPost(req) {
+        return Post(req.body).save();
+    };
+
 };
 
 
-const dataService = new service();
-
-const result = dataService.getAllPosts();
-console.log('this should be last');
-console.log(result);
 
 module.exports = service;
