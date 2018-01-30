@@ -1,5 +1,5 @@
-const express       = require('express');
-const postController    = require('./controllers/postController.js');
+const express = require('express');
+const postController = require('./controllers/postController.js');
 
 const app = express();
 
