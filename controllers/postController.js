@@ -9,7 +9,7 @@ const postService = new PostService();
 
 router.get(['/', '/posts'], (req, res) => {
   postService.getAllPosts().then((posts) => {
-    res.render('posts', { posts: posts });
+    res.render('posts', { posts });
   }).catch((err) => {
     res.status(503).send(err.message);
   });
@@ -17,7 +17,7 @@ router.get(['/', '/posts'], (req, res) => {
 
 router.get('/posts/:post_id', (req, res) => {
   postService.getOnePost(req.params.post_id).then((post) => {
-    res.render('post_detail', { post: post });
+    res.render('post_detail', { post });
   }).catch((err) => {
     res.status(503).send(err.message);
   });

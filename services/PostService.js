@@ -1,16 +1,17 @@
 const Post = require('../models/Post');
 
 class PostService {
-  getOnePost(postId) {
+  static getOnePost(postId) {
     return Post.findById(postId);
   }
 
-  getAllPosts() {
+  static getAllPosts() {
     return Post.find({});
   }
 
-  createNewPost(title, author, body) {
-    return post = new Post({ title, author, body }).save();
+  static createNewPost(title, author, body) {
+    const post = new Post({ title, author, body }).save();
+    return post;
   }
 }
 
