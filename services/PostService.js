@@ -10,8 +10,7 @@ class PostService {
   }
 
   static createNewPost(title, author, body) {
-    const post = new Post({ title, author, body }).save();
-    return post;
+    return new Post({ title, author, body }).save();
   }
 }
 
