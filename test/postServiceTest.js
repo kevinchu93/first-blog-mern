@@ -7,9 +7,10 @@ const PostService = require('../services/PostService');
 describe('PostService', () => {
   describe('getOnePost(post_id)', () => {
     it('should return correct post', () => {
-      const stub = sinon.stub(Post, 'findById').returns('post');
-      const post = PostService.getOnePost('postId');
-      assert.equal(post, 'post');
+      const expected = sinon.mock();
+      const stub = sinon.stub(Post, 'findById').returns(expected);
+      const post = PostService.getOnePost(5);
+      assert.equal(post, expected);
       stub.restore();
     });
     it('should call function findById with correct parameters', () => {
