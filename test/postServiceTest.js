@@ -13,10 +13,26 @@ describe('PostService', () => {
       assert.equal(post, expected);
       stub.restore();
     });
+  });
     it('should call function findById with correct parameters', () => {
       const stub = sinon.stub(Post, 'findById');
       PostService.getOnePost(5);
       sinon.assert.calledWith(stub, 5);
+      stub.restore();
+    });
+  describe('getAllPosts()', () => {
+    it('should be called with no parameters', () => {
+      const stub = sinon.stub(Post, 'find');
+      PostService.getAllPosts();
+      sinon.assert.calledWith(stub);
+      stub.restore();
+    });
+  });
+  describe('createNewPost(title, author, body)', () => {
+    it('should be called with correct parameters', () => {
+      const stub = sinon.stub(Post, 'create');
+      PostService.createNewPost('intro', 'kevin', 'hello');
+      sinon.assert.calledWith(stub, { title: 'intro', author: 'kevin', body: 'hello' });
       stub.restore();
     });
   });

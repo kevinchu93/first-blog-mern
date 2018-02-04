@@ -10,7 +10,7 @@ class PostService {
   }
 
   static createNewPost(title, author, body) {
-    return new Post({ title, author, body }).save();
+    return Post.create({ title, author, body });
   }
 }
 
