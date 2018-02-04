@@ -13,13 +13,13 @@ describe('PostService', () => {
       assert.equal(post, expected);
       stub.restore();
     });
-  });
     it('should call function findById with correct parameters', () => {
       const stub = sinon.stub(Post, 'findById');
       PostService.getOnePost(5);
       sinon.assert.calledWith(stub, 5);
       stub.restore();
     });
+  });
   describe('getAllPosts()', () => {
     it('should be called with no parameters', () => {
       const stub = sinon.stub(Post, 'find');
