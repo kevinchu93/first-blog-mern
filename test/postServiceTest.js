@@ -36,7 +36,7 @@ describe('PostService', () => {
     });
   });
   describe('createNewPost(title, author, body)', () => {
-    it('should call function createNewPost with correct parameters', () => {
+    it('should call function "create" with correct parameters', () => {
       const stub = sinon.stub(Post, 'create');
       PostService.createNewPost('intro', 'kevin', 'hello');
       sinon.assert.calledWith(stub, { title: 'intro', author: 'kevin', body: 'hello' });
