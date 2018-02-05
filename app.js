@@ -13,4 +13,4 @@ app.use(express.static('public'));
 
 app.use('', postController);
 
-module.exports = app.listen(3000);
+app.listen(3000);

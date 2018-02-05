@@ -6,7 +6,7 @@ const PostService = require('../services/PostService');
 
 describe('PostService', () => {
   describe('getOnePost(post_id)', () => {
-    it('should call function findById with correct parameters', () => {
+    it('should call function "findById" with correct parameters', () => {
       const stub = sinon.stub(Post, 'findById');
       PostService.getOnePost(5);
       sinon.assert.calledWith(stub, 5);
@@ -21,7 +21,7 @@ describe('PostService', () => {
     });
   });
   describe('getAllPosts()', () => {
-    it('should be called with no parameters', () => {
+    it('should call function "find" with no parameters', () => {
       const stub = sinon.stub(Post, 'find');
       PostService.getAllPosts();
       sinon.assert.calledWith(stub);
@@ -36,7 +36,7 @@ describe('PostService', () => {
     });
   });
   describe('createNewPost(title, author, body)', () => {
-    it('should be called with correct parameters', () => {
+    it('should call function createNewPost with correct parameters', () => {
       const stub = sinon.stub(Post, 'create');
       PostService.createNewPost('intro', 'kevin', 'hello');
       sinon.assert.calledWith(stub, { title: 'intro', author: 'kevin', body: 'hello' });
