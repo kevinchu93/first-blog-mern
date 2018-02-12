@@ -2,16 +2,28 @@ sudo: required
 
 language: node_js
 node_js:
-  - "stable"
+- stable
 
 services:
-  - docker
+- docker
 
 before_install:
-  - docker build -t kevinchu/first-blog-mern .
-  - docker run -d -p 127.0.0.1:4000:3000 kevinchu/first-blog-mern
-  - docker ps -a
+- docker build -t kevinchu/first-blog-mern .
+- docker run -d -p 127.0.0.1:4000:3000 kevinchu/first-blog-mern
+- docker ps -a
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push kevinchu/first-blog-mern;
+    fi
 
 script:
-  - npm run lint
-  - npm run test
+- npm run lint
+- npm run test
+
+env:
+  matrix:
+    secure: edAddjyfzXOdYU2BFI3RfGpyFXkHVeR2o71e8pqB0+iRvyg/n5sy83thATqFYkpPTLN0+2LdyWUWnhhQb/jKiINTwl/8qMDhSwEd/y1VVjx28ISUDPv6bhLmQWN6bklg6TUA2a/fXS6sbQ0KWEb4IihvedZqnyb0CAKKC4ON4/645DyxRQLOBJP+hqwiXQBzgbHiRwU+04YcNtd4iH1k5h8g7s/FaOtE9spN2JItMcwCngRoaMDjbjeu1vKUTu/JRIC3IE6tnJWhWGMbS8JtTwmMEbp0/LHZ85FbckzwomMb0Y2tmYrb5o3pcJo6jlAHObB5B2+GeWqE+cZwXm0GShRmYGyA4oJiVl8j3NsxYs2QjBh2FrsSGav8WEZo05QaKXYLLsFKWsELjCRwMAMOcGZUNiw9l03Rb1byvm9jjATs3hOuqrpFbV5U+M94qRI45BUl5kRBfdPW7BdHD/EVMlD0+vuHrKnyqa9HEohikOd22r3SblrdxyBWBaOmcCRiyMj4WSw2IojQ58TArWMCrYqO9WEf4R5H8Ca4PiQ3ZipjKShMXp4V+iwSXdgiKa/UDPNYfag1yI8zkxpRLz8jGhkL+qTGIfy9GHDtFjCm041mjc1VMoxph0G/bKBa1kJjJNtz84C62U2UdLGWIPkI9KUHLtSJTuj8CE5La8lobQQ=
+  matrix:
+    secure: VrZpkdJQBgN3O03bhvhosButMjNQDv+flXUFFAE5TfVlIcYqQwobzFk7XMQarCcn07UyMxVzNWshQn1dMwm4Gs3cRQa8UviDp4HVKrFbdzfK7yDwX60Hjo7e+BAR6QoMfr0ZVQZ+V32HhOWnNoXCxQbY2DTme13vfJRhQDPwqflAXDnbMZLxTU8lWzx1j22zm3bIJMVUeB6A+5bUhGqwYvs1nIEfui9jY7SCE0fI5DDYZn9tbvNgPL1IhUXSkCxJGskllsubLogO5GARvb/zn5LFMDCf6aB2HDmpAQKzGTw0ePFUvOekAftwpopL10scjG13iMZHn/k2n4HIOvSwcYST7dG4Y51nkbfQ8u9h9LqGO1VZ8i5TDWO6YFSm1tJ8OJp/Ks0jaNQNMGsErc//ZAVjiardHJtNBOwBCvPnIIlsoAvKB7lnu3V0+zm0yNrtLqwmTM95EeltTNdNtmOZ16EYJt0GIkYQ5CaF3pr1ulp2fWw6wK5W/dmhrrEnuHOCAOh1fwZ0JNLCx0eesiR5BMWuldh1T1YVjvlhUAqX/s4lYwWuof6WK61MG18lvkiiNddXuZvIMJ50oh8VceQI09FCif2EoYM6JfYf/XGmv31QGgEB3LxgnXlCn0VF3B1yOk7IvDCKvnB2C4V25wLz3rp84kCxND8AvOCW2LhUIw8=
