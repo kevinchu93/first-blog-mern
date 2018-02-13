@@ -2,25 +2,21 @@ sudo: required
 
 language: node_js
 node_js:
-- stable
+- "node" 
 
 services:
 - docker
 
-before_install:
-- docker build -t kevinchu/first-blog-mern .
-- docker run -d -p 127.0.0.1:4000:3000 kevinchu/first-blog-mern
-- docker ps -a
-
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker push kevinchu/first-blog-mern;
-    fi
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+  docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+  docker push kevinchu/first-blog-mern;
+  fi
 
 script:
 - npm run lint
 - npm run test
+- docker build -t kevinchu/first-blog-mern .
 
 env:
   matrix:

@@ -1,8 +1,8 @@
 FROM node
 
-WORKDIR /app
+WORKDIR /opt/first-blog-mern
 
-ADD . /app
+COPY . /opt/first-blog-mern 
 
 RUN npm install
 
