@@ -2,7 +2,7 @@ FROM node
 
 WORKDIR /opt/first-blog-mern
 
-COPY . /opt/first-blog-mern 
+COPY . . 
 
 RUN npm install
 
