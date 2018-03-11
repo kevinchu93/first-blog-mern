@@ -8,8 +8,9 @@ services:
 - docker
 
 env:
-  - DOCKER_USERNAME=kevinchu
-  - DOCKER_PASSWORD=docker
+  global:
+    - DOCKER_USERNAME=kevinchu
+    - DOCKER_PASSWORD=docker
     #    matrix:
     #  secure: edAddjyfzXOdYU2BFI3RfGpyFXkHVeR2o71e8pqB0+iRvyg/n5sy83thATqFYkpPTLN0+2LdyWUWnhhQb/jKiINTwl/8qMDhSwEd/y1VVjx28ISUDPv6bhLmQWN6bklg6TUA2a/fXS6sbQ0KWEb4IihvedZqnyb0CAKKC4ON4/645DyxRQLOBJP+hqwiXQBzgbHiRwU+04YcNtd4iH1k5h8g7s/FaOtE9spN2JItMcwCngRoaMDjbjeu1vKUTu/JRIC3IE6tnJWhWGMbS8JtTwmMEbp0/LHZ85FbckzwomMb0Y2tmYrb5o3pcJo6jlAHObB5B2+GeWqE+cZwXm0GShRmYGyA4oJiVl8j3NsxYs2QjBh2FrsSGav8WEZo05QaKXYLLsFKWsELjCRwMAMOcGZUNiw9l03Rb1byvm9jjATs3hOuqrpFbV5U+M94qRI45BUl5kRBfdPW7BdHD/EVMlD0+vuHrKnyqa9HEohikOd22r3SblrdxyBWBaOmcCRiyMj4WSw2IojQ58TArWMCrYqO9WEf4R5H8Ca4PiQ3ZipjKShMXp4V+iwSXdgiKa/UDPNYfag1yI8zkxpRLz8jGhkL+qTGIfy9GHDtFjCm041mjc1VMoxph0G/bKBa1kJjJNtz84C62U2UdLGWIPkI9KUHLtSJTuj8CE5La8lobQQ=
     # matrix:
