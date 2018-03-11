@@ -14,8 +14,5 @@ app.use(express.static('public'));
 app.use('', postController);
 
 app.listen(3000);
-<<<<<<< HEAD
-=======
 
 module.exports = app;
->>>>>>> 890ea25... add tentative postController tests using supertest
