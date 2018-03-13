@@ -2,15 +2,10 @@
 const express = require('express');
 const request = require('supertest');
 const postController = require('../controllers/postController');
-const mongoose = require('mongoose');
 const sinon = require('sinon');
 const postService = require('../services/postService');
 
 const app = express();
-
-//mongoose.Promise = require('bluebird');
-
-//mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern', { useMongoClient: true });
 
 app.set('view engine', 'ejs');
 app.use(express.static('../public'));
