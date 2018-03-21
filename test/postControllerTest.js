@@ -14,20 +14,16 @@ app.use(express.static('../public'));
 app.use('', postController);
 
 describe('postController', () => {
-  let stubGetAllPosts = sinon.stub();
-  let stubGetOnePost = sinon.stub();
-  let stubCreateNewPost = sinon.stub();
-
   beforeEach(() => {
-    stubGetAllPosts = sinon.stub(postService, 'getAllPosts').resolves('expected');
-    stubGetOnePost = sinon.stub(postService, 'getOnePost').resolves('expected');
-    stubCreateNewPost = sinon.stub(postService, 'createNewPost').returns(Promise.resolve('expected'));
+    sinon.stub(postService, 'getAllPosts').resolves('expected');
+    sinon.stub(postService, 'getOnePost').resolves('expected');
+    sinon.stub(postService, 'createNewPost').resolves('expected');
   });
 
   afterEach(() => {
-    stubGetAllPosts.restore();
-    stubGetOnePost.restore();
-    stubCreateNewPost.restore();
+    postService.getAllPosts.restore();
+    postService.getOnePost.restore();
+    postService.createNewPost.restore();
   });
 
   describe('GET /', () => {
@@ -35,7 +31,7 @@ describe('postController', () => {
       request(app)
         .get('/')
         .end((err) => {
-          sinon.assert.calledWith(stubGetAllPosts);
+          sinon.assert.calledWith(postService.getAllPosts);
           if (err) return done(err);
           return done();
         });
@@ -46,7 +42,7 @@ describe('postController', () => {
       request(app)
         .get('/')
         .end((err) => {
-          stubGetAllPosts().then((posts) => {
+          postService.getAllPosts().then((posts) => {
             assert.equal(posts, 'expected');
             if (err) return done(err);
             return done();
@@ -59,7 +55,7 @@ describe('postController', () => {
       request(app)
         .get('/posts')
         .end((err) => {
-          sinon.assert.calledWith(stubGetAllPosts);
+          sinon.assert.calledWith(postService.getAllPosts);
           if (err) return done(err);
           return done();
         });
@@ -70,7 +66,7 @@ describe('postController', () => {
       request(app)
         .get('/posts')
         .end((err) => {
-          stubGetAllPosts().then((posts) => {
+          postService.getAllPosts().then((posts) => {
             assert.equal(posts, 'expected');
             if (err) return done(err);
             return done();
@@ -83,7 +79,7 @@ describe('postController', () => {
       request(app)
         .get('/posts/post_id')
         .end((err) => {
-          sinon.assert.calledWith(stubGetOnePost, 'post_id');
+          sinon.assert.calledWith(postService.getOnePost, 'post_id');
           if (err) return done(err);
           return done();
         });
@@ -94,7 +90,7 @@ describe('postController', () => {
       request(app)
         .get('/post/post_id')
         .end((err) => {
-          stubGetOnePost().then((post) => {
+          postService.getOnePost().then((post) => {
             assert.equal(post, 'expected');
             if (err) return done(err);
             return done();
@@ -109,7 +105,7 @@ describe('postController', () => {
         .type('form')
         .send({ title: 'title', author: 'author', body: 'body' })
         .end((err) => {
-          sinon.assert.calledWith(stubCreateNewPost, 'title', 'author', 'body');
+          sinon.assert.calledWith(postService.createNewPost, 'title', 'author', 'body');
           if (err) return done(err);
           return done();
         });
