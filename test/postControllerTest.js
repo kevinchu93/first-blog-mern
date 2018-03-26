@@ -27,89 +27,75 @@ describe('postController', () => {
   });
 
   describe('GET /', () => {
-    it('should call method "postService.getAllPosts" with no arguments', (done) => {
+    it('should call method "postService.getAllPosts" with no arguments', () => (
       request(app)
         .get('/')
-        .end((err) => {
+        .then(() => {
           sinon.assert.calledWith(postService.getAllPosts);
-          if (err) return done(err);
-          return done();
-        });
-    });
+        })
+    ));
   });
   describe('GET /', () => {
-    it('should return correct "posts" in promise', (done) => {
+    it('should return correct "posts" in promise', () => (
       request(app)
         .get('/')
-        .end((err) => {
+        .then(() => {
           postService.getAllPosts().then((posts) => {
             assert.equal(posts, 'expected');
-            if (err) return done(err);
-            return done();
           });
-        });
-    });
+        })
+    ));
   });
   describe('GET /posts', () => {
-    it('should call method "postService.getAllPosts" with no arguments', (done) => {
+    it('should call method "postService.getAllPosts" with no arguments', () => (
       request(app)
         .get('/posts')
-        .end((err) => {
+        .then(() => {
           sinon.assert.calledWith(postService.getAllPosts);
-          if (err) return done(err);
-          return done();
-        });
-    });
+        })
+    ));
   });
   describe('GET /posts', () => {
-    it('should return correct "posts" in promise', (done) => {
+    it('should return correct "posts" in promise', () => (
       request(app)
         .get('/posts')
-        .end((err) => {
+        .then(() => {
           postService.getAllPosts().then((posts) => {
             assert.equal(posts, 'expected');
-            if (err) return done(err);
-            return done();
           });
-        });
-    });
+        })
+    ));
   });
   describe('GET /posts/:post_id', () => {
-    it('should call method "postService.getOnePost" with correct arguments', (done) => {
+    it('should call method "postService.getOnePost" with correct arguments', () => (
       request(app)
         .get('/posts/post_id')
-        .end((err) => {
+        .then(() => {
           sinon.assert.calledWith(postService.getOnePost, 'post_id');
-          if (err) return done(err);
-          return done();
-        });
-    });
+        })
+    ));
   });
   describe('GET /posts/:post_id', () => {
-    it('should return correct "post" in promise', (done) => {
+    it('should return correct "post" in promise', () => (
       request(app)
         .get('/post/post_id')
-        .end((err) => {
+        .then(() => {
           postService.getOnePost().then((post) => {
             assert.equal(post, 'expected');
-            if (err) return done(err);
-            return done();
           });
-        });
-    });
+        })
+    ));
   });
   describe('POST /post_new', () => {
-    it('should call method "postService.createNewPost" with correct arguments', (done) => {
+    it('should call method "postService.createNewPost" with correct arguments', () => (
       request(app)
         .post('/post_new')
         .type('form')
         .send({ title: 'title', author: 'author', body: 'body' })
-        .end((err) => {
+        .then(() => {
           sinon.assert.calledWith(postService.createNewPost, 'title', 'author', 'body');
-          if (err) return done(err);
-          return done();
-        });
-    });
+        })
+    ));
   });
 
   // Nav Tests
@@ -119,12 +105,7 @@ describe('postController', () => {
         .get('/')
         .expect(200)
         .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/My First Blog/)
-        .end((err) => {
-          //          stub.restore();
-          if (err) return done(err);
-          return done();
-        });
+        .expect(/My First Blog/, done);
     });
   });
   describe('GET /posts', () => {
@@ -133,11 +114,7 @@ describe('postController', () => {
         .get('/posts')
         .expect(200)
         .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/My First Blog/)
-        .end((err) => {
-          if (err) return done(err);
-          return done();
-        });
+        .expect(/My First Blog/, done);
     });
   });
   describe('GET /posts/:post_id', () => {
@@ -146,11 +123,7 @@ describe('postController', () => {
         .get('/posts/post_id')
         .expect(200)
         .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/My First Blog/)
-        .end((err) => {
-          if (err) return done(err);
-          return done();
-        });
+        .expect(/My First Blog/, done);
     });
   });
   describe('GET /post_new', () => {
@@ -159,11 +132,7 @@ describe('postController', () => {
         .get('/post_new')
         .expect(200)
         .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/New Post/)
-        .end((err) => {
-          if (err) return done(err);
-          return done();
-        });
+        .expect(/New Post/, done);
     });
   });
   describe('POST /post_new', () => {
@@ -173,11 +142,7 @@ describe('postController', () => {
         .send({ title: 'title', author: 'author', body: 'body' })
         .expect(302)
         .expect('Content-Type', 'text/plain; charset=utf-8')
-        .expect('Location', 'posts')
-        .end((err) => {
-          if (err) return done(err);
-          return done();
-        });
+        .expect('Location', 'posts', done);
     });
   });
 });
