@@ -1,4 +1,3 @@
-/* global it, describe */
 const express = require('express');
 const request = require('supertest');
 const postController = require('../controllers/postController');
@@ -15,8 +14,12 @@ app.use('', postController);
 
 describe('postController', () => {
   beforeEach(() => {
-    sinon.stub(postService, 'getAllPosts').resolves('expected');
-    sinon.stub(postService, 'getOnePost').resolves('expected');
+    sinon.stub(postService, 'getAllPosts').resolves([
+      { title: 'post1', author: 'author1', body: 'body1' },
+      { title: 'post2', author: 'author2', body: 'body2' },
+      { title: 'post3', author: 'author3', body: 'body3' },
+    ]);
+    sinon.stub(postService, 'getOnePost').resolves({ title: 'post1', author: 'author1', body: 'body1' });
     sinon.stub(postService, 'createNewPost').resolves('expected');
   });
 
@@ -34,16 +37,18 @@ describe('postController', () => {
           sinon.assert.calledWith(postService.getAllPosts);
         })
     ));
-  });
-  describe('GET /', () => {
-    it('should return correct "posts" in promise', () => (
+    it('should return correct "3 posts" in view', () => (
       request(app)
         .get('/')
-        .then(() => {
-          postService.getAllPosts().then((posts) => {
-            assert.equal(posts, 'expected');
-          });
-        })
+        .expect(/post1/)
+        .expect(/author1/)
+        .expect(/body1/)
+        .expect(/post2/)
+        .expect(/author2/)
+        .expect(/body2/)
+        .expect(/post3/)
+        .expect(/author3/)
+        .expect(/body3/)
     ));
   });
   describe('GET /posts', () => {
@@ -54,16 +59,18 @@ describe('postController', () => {
           sinon.assert.calledWith(postService.getAllPosts);
         })
     ));
-  });
-  describe('GET /posts', () => {
-    it('should return correct "posts" in promise', () => (
+    it('should return correct "posts" in view', () => (
       request(app)
         .get('/posts')
-        .then(() => {
-          postService.getAllPosts().then((posts) => {
-            assert.equal(posts, 'expected');
-          });
-        })
+        .expect(/post1/)
+        .expect(/author1/)
+        .expect(/body1/)
+        .expect(/post2/)
+        .expect(/author2/)
+        .expect(/body2/)
+        .expect(/post3/)
+        .expect(/author3/)
+        .expect(/body3/)
     ));
   });
   describe('GET /posts/:post_id', () => {
@@ -74,16 +81,12 @@ describe('postController', () => {
           sinon.assert.calledWith(postService.getOnePost, 'post_id');
         })
     ));
-  });
-  describe('GET /posts/:post_id', () => {
-    it('should return correct "post" in promise', () => (
+    it('should return correct "post" in view', () => (
       request(app)
-        .get('/post/post_id')
-        .then(() => {
-          postService.getOnePost().then((post) => {
-            assert.equal(post, 'expected');
-          });
-        })
+        .get('/posts/post_id')
+        .expect(/post1/)
+        .expect(/author1/)
+        .expect(/body1/)
     ));
   });
   describe('POST /post_new', () => {
@@ -94,6 +97,15 @@ describe('postController', () => {
         .send({ title: 'title', author: 'author', body: 'body' })
         .then(() => {
           sinon.assert.calledWith(postService.createNewPost, 'title', 'author', 'body');
+        })
+    ));
+    it('should throw error when calling "postService.createNewPost" with incorrectly formmatted object arguments', () => (
+      request(app)
+        .post('/post_new')
+        .type('form')
+        .send({ title: 'title', author: 'author', error: 'body' })
+        .then(() => {
+          assert.throws(() => sinon.assert.calledWith(postService.createNewPost, 'title', 'author', 'body'));
         })
     ));
   });

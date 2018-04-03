@@ -1,4 +1,3 @@
-/* global it, describe */
 const sinon = require('sinon');
 const assert = require('assert');
 const Post = require('../models/Post');
