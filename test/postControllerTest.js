@@ -39,6 +39,7 @@ describe('postController', () => {
     it('should call method "postService.getAllPosts" with no arguments', () => (
       request(app)
         .get('/')
+        .expect(200)
         .expect(() => {
           sinon.assert.calledWith(postService.getAllPosts);
         })
@@ -46,6 +47,7 @@ describe('postController', () => {
     it('should return resolved result of "postService.getAllPosts" to view', () => (
       request(app)
         .get('/')
+        .expect(200)
         .expect(/post1/)
         .expect(/author1/)
         .expect(/body1/)
@@ -68,6 +70,7 @@ describe('postController', () => {
     it('should call method "postService.getAllPosts" with no arguments', () => (
       request(app)
         .get('/posts')
+        .expect(200)
         .expect(() => {
           sinon.assert.calledWith(postService.getAllPosts);
         })
@@ -75,6 +78,7 @@ describe('postController', () => {
     it('should return resolved result of "postService.getAllPosts" to view', () => (
       request(app)
         .get('/posts')
+        .expect(200)
         .expect(/post1/)
         .expect(/author1/)
         .expect(/body1/)
@@ -97,6 +101,7 @@ describe('postController', () => {
     it('should call method "postService.getOnePost" with correct arguments', () => (
       request(app)
         .get('/posts/post_id')
+        .expect(200)
         .expect(() => {
           sinon.assert.calledWith(postService.getOnePost, 'post_id');
         })
@@ -104,6 +109,7 @@ describe('postController', () => {
     it('should return resolved result of "postService.getOnePost" to view', () => (
       request(app)
         .get('/posts/post_id')
+        .expect(200)
         .expect(/post1/)
         .expect(/author1/)
         .expect(/body1/)
@@ -116,6 +122,15 @@ describe('postController', () => {
         .expect(503);
     });
   });
+  describe('GET /post_new', () => {
+    it('should return "post_new" view', () => (
+      request(app)
+        .get('/post_new')
+        .expect(200)
+        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect(/New Post/)
+    ));
+  });
   describe('POST /post_new', () => {
     it('should call method "postService.createNewPost" with correct arguments', () => (
       request(app)
@@ -127,13 +142,17 @@ describe('postController', () => {
           sinon.assert.calledWith(postService.createNewPost, 'title', 'author', 'body');
         })
     ));
+    it('should redirect to "posts" view after creating post', () => (
+      request(app)
+        .post('/post_new')
+        .expect(302)
+        .expect('Location', 'posts')
+    ));
     it('should return error when "postService.createNewPost" rejects', () => {
       postService.createNewPost.restore();
       sinon.stub(postService, 'createNewPost').rejects();
       return request(app)
         .post('/post_new')
-        .type('form')
-        .send({ title: 'title', author: 'author', body: 'body' })
         .expect(503);
     });
   });
@@ -158,12 +177,12 @@ describe('postController', () => {
     ));
   });
   describe('GET /posts/:post_id', () => {
-    it('should respond with post detail', (done) => {
+    it('should respond with post detail', () => (
       request(app)
         .get('/posts/post_id')
         .expect(200)
         .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/My First Blog/, done);
-    });
+        .expect(/My First Blog/)
+    ));
   });
 });
