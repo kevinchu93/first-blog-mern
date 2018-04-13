@@ -7,7 +7,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 router.get(['/', '/posts'], (req, res) => {
   postService.getAllPosts().then((posts) => {
-    res.render('posts', { posts });
+    res.json(posts);
   }).catch((err) => {
     res.status(503).send(err.message);
   });
@@ -15,19 +15,15 @@ router.get(['/', '/posts'], (req, res) => {
 
 router.get('/posts/:post_id', (req, res) => {
   postService.getOnePost(req.params.post_id).then((post) => {
-    res.render('post_detail', { post });
+    res.json(post);
   }).catch((err) => {
     res.status(503).send(err.message);
   });
 });
 
-router.get('/post_new', (req, res) => {
-  res.render('post_new');
-});
-
 router.post('/post_new', urlencodedParser, (req, res) => {
   postService.createNewPost(req.body.title, req.body.author, req.body.body).then(() => {
-    res.redirect('posts');
+    res.json({ message: 'Post Created!' });
   }).catch((err) => {
     res.status(503).send(err.message);
   });

@@ -44,10 +44,11 @@ describe('postController', () => {
           sinon.assert.calledWith(postService.getAllPosts);
         })
     ));
-    it('should return resolved result of "postService.getAllPosts" to view', () => (
+    it('should return resolved result of "postService.getAllPosts" as json object', () => (
       request(app)
         .get('/')
         .expect(200)
+        .expect('Content-Type', /json/)
         .expect(/post1/)
         .expect(/author1/)
         .expect(/body1/)
@@ -75,10 +76,11 @@ describe('postController', () => {
           sinon.assert.calledWith(postService.getAllPosts);
         })
     ));
-    it('should return resolved result of "postService.getAllPosts" to view', () => (
+    it('should return resolved result of "postService.getAllPosts" as json object', () => (
       request(app)
         .get('/posts')
         .expect(200)
+        .expect('Content-Type', /json/)
         .expect(/post1/)
         .expect(/author1/)
         .expect(/body1/)
@@ -106,10 +108,11 @@ describe('postController', () => {
           sinon.assert.calledWith(postService.getOnePost, 'post_id');
         })
     ));
-    it('should return resolved result of "postService.getOnePost" to view', () => (
+    it('should return resolved result of "postService.getOnePost" as json object', () => (
       request(app)
         .get('/posts/post_id')
         .expect(200)
+        .expect('Content-Type', /json/)
         .expect(/post1/)
         .expect(/author1/)
         .expect(/body1/)
@@ -122,31 +125,23 @@ describe('postController', () => {
         .expect(503);
     });
   });
-  describe('GET /post_new', () => {
-    it('should return "post_new" view', () => (
-      request(app)
-        .get('/post_new')
-        .expect(200)
-        .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/New Post/)
-    ));
-  });
   describe('POST /post_new', () => {
     it('should call method "postService.createNewPost" with correct arguments', () => (
       request(app)
         .post('/post_new')
         .type('form')
         .send({ title: 'title', author: 'author', body: 'body' })
-        .expect(302)
+        .expect(200)
         .expect(() => {
           sinon.assert.calledWith(postService.createNewPost, 'title', 'author', 'body');
         })
     ));
-    it('should redirect to "posts" view after creating post', () => (
+    it('should output correct json object after creating post', () => (
       request(app)
         .post('/post_new')
-        .expect(302)
-        .expect('Location', 'posts')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(/Post Created/)
     ));
     it('should return error when "postService.createNewPost" rejects', () => {
       postService.createNewPost.restore();
@@ -155,34 +150,5 @@ describe('postController', () => {
         .post('/post_new')
         .expect(503);
     });
-  });
-
-  // Nav Tests
-  describe('GET /', () => {
-    it('should respond with homepage', () => (
-      request(app)
-        .get('/')
-        .expect(200)
-        .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/My First Blog/)
-    ));
-  });
-  describe('GET /posts', () => {
-    it('should respond with homepage', () => (
-      request(app)
-        .get('/posts')
-        .expect(200)
-        .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/My First Blog/)
-    ));
-  });
-  describe('GET /posts/:post_id', () => {
-    it('should respond with post detail', () => (
-      request(app)
-        .get('/posts/post_id')
-        .expect(200)
-        .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/My First Blog/)
-    ));
   });
 });
