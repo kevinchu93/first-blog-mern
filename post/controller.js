@@ -1,5 +1,5 @@
 const bodyParser = require('body-parser');
-const postService = require('../services/postService');
+const postService = require('./service');
 const express = require('express');
 
 const router = express.Router();

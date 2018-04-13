@@ -1,7 +1,7 @@
 const sinon = require('sinon');
 const assert = require('assert');
-const Post = require('../models/Post');
-const postService = require('../services/postService');
+const Post = require('../../models/Post');
+const postService = require('../../post/service');
 
 describe('postService', () => {
   describe('getOnePost(post_id)', () => {
