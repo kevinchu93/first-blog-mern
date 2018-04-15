@@ -1,9 +1,9 @@
 const express = require('express');
 const request = require('supertest');
-const postController = require('../controllers/postController');
+const postController = require('../../post/controller');
 const sinon = require('sinon');
-const postService = require('../services/postService');
-const Post = require('../models/Post');
+const postService = require('../../post/service');
+const Post = require('../../models/Post');
 
 const app = express();
 
