@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-router.get(['/', '/posts'], (req, res) => {
+router.get('/posts', (req, res) => {
   postService.getAllPosts().then((posts) => {
     res.json(posts);
   }).catch((err) => {
@@ -21,8 +21,9 @@ router.get('/posts/:post_id', (req, res) => {
   });
 });
 
-router.post('/post_new', urlencodedParser, (req, res) => {
-  postService.createNewPost(req.body.title, req.body.author, req.body.body).then(() => {
+router.post('/posts', urlencodedParser, (req, res) => {
+  postService.createNewPost(req.body.title, req.body.author, req.body.body).then((promise) => {
+    console.log(promise);
     res.json({ message: 'Post Created!' });
   }).catch((err) => {
     res.status(503).send(err.message);
