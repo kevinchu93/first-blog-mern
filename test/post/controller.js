@@ -4,6 +4,7 @@ const postController = require('../../post/controller');
 const sinon = require('sinon');
 const postService = require('../../post/service');
 const Post = require('../../models/Post');
+const assert = require('assert');
 
 const app = express();
 
@@ -35,38 +36,6 @@ describe('postController', () => {
     postService.createNewPost.restore();
   });
 
-  describe('GET /', () => {
-    it('should call method "postService.getAllPosts" with no arguments', () => (
-      request(app)
-        .get('/')
-        .expect(200)
-        .expect(() => {
-          sinon.assert.calledWith(postService.getAllPosts);
-        })
-    ));
-    it('should return resolved result of "postService.getAllPosts" as json object', () => (
-      request(app)
-        .get('/')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .expect(/post1/)
-        .expect(/author1/)
-        .expect(/body1/)
-        .expect(/post2/)
-        .expect(/author2/)
-        .expect(/body2/)
-        .expect(/post3/)
-        .expect(/author3/)
-        .expect(/body3/)
-    ));
-    it('should return error when "postService.getAllPosts" rejects', () => {
-      postService.getAllPosts.restore();
-      sinon.stub(postService, 'getAllPosts').rejects();
-      return request(app)
-        .get('/')
-        .expect(503);
-    });
-  });
   describe('GET /posts', () => {
     it('should call method "postService.getAllPosts" with no arguments', () => (
       request(app)
@@ -79,17 +48,19 @@ describe('postController', () => {
     it('should return resolved result of "postService.getAllPosts" as json object', () => (
       request(app)
         .get('/posts')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .expect(/post1/)
-        .expect(/author1/)
-        .expect(/body1/)
-        .expect(/post2/)
-        .expect(/author2/)
-        .expect(/body2/)
-        .expect(/post3/)
-        .expect(/author3/)
-        .expect(/body3/)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect(res => {
+        assert.equal(res.body[0].title, 'post1');
+        assert.equal(res.body[0].author, 'author1');
+        assert.equal(res.body[0].body, 'body1');
+        assert.equal(res.body[1].title, 'post2');
+        assert.equal(res.body[1].author, 'author2');
+        assert.equal(res.body[1].body, 'body2');
+        assert.equal(res.body[2].title, 'post3');
+        assert.equal(res.body[2].author, 'author3');
+        assert.equal(res.body[2].body, 'body3');
+      })
     ));
     it('should return error when "postService.getAllPosts" rejects', () => {
       postService.getAllPosts.restore();
@@ -113,9 +84,11 @@ describe('postController', () => {
         .get('/posts/post_id')
         .expect(200)
         .expect('Content-Type', /json/)
-        .expect(/post1/)
-        .expect(/author1/)
-        .expect(/body1/)
+        .expect(res => {
+          assert.equal(res.body.title, 'post1');
+          assert.equal(res.body.author, 'author1');
+          assert.equal(res.body.body, 'body1');
+        })
     ));
     it('should return error when "postService.getOnePost" rejects', () => {
       postService.getOnePost.restore();
@@ -128,7 +101,7 @@ describe('postController', () => {
   describe('POST /post_new', () => {
     it('should call method "postService.createNewPost" with correct arguments', () => (
       request(app)
-        .post('/post_new')
+        .post('/posts')
         .type('form')
         .send({ title: 'title', author: 'author', body: 'body' })
         .expect(200)
@@ -138,7 +111,7 @@ describe('postController', () => {
     ));
     it('should output correct json object after creating post', () => (
       request(app)
-        .post('/post_new')
+        .post('/posts')
         .expect(200)
         .expect('Content-Type', /json/)
         .expect(/Post Created/)
@@ -147,7 +120,7 @@ describe('postController', () => {
       postService.createNewPost.restore();
       sinon.stub(postService, 'createNewPost').rejects();
       return request(app)
-        .post('/post_new')
+        .post('/posts')
         .expect(503);
     });
   });
