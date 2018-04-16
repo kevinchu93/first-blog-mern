@@ -48,19 +48,19 @@ describe('postController', () => {
     it('should return resolved result of "postService.getAllPosts" as json object', () => (
       request(app)
         .get('/posts')
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .expect(res => {
-        assert.equal(res.body[0].title, 'post1');
-        assert.equal(res.body[0].author, 'author1');
-        assert.equal(res.body[0].body, 'body1');
-        assert.equal(res.body[1].title, 'post2');
-        assert.equal(res.body[1].author, 'author2');
-        assert.equal(res.body[1].body, 'body2');
-        assert.equal(res.body[2].title, 'post3');
-        assert.equal(res.body[2].author, 'author3');
-        assert.equal(res.body[2].body, 'body3');
-      })
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect((res) => {
+          assert.equal(res.body[0].title, 'post1');
+          assert.equal(res.body[0].author, 'author1');
+          assert.equal(res.body[0].body, 'body1');
+          assert.equal(res.body[1].title, 'post2');
+          assert.equal(res.body[1].author, 'author2');
+          assert.equal(res.body[1].body, 'body2');
+          assert.equal(res.body[2].title, 'post3');
+          assert.equal(res.body[2].author, 'author3');
+          assert.equal(res.body[2].body, 'body3');
+        })
     ));
     it('should return error when "postService.getAllPosts" rejects', () => {
       postService.getAllPosts.restore();
@@ -84,7 +84,7 @@ describe('postController', () => {
         .get('/posts/post_id')
         .expect(200)
         .expect('Content-Type', /json/)
-        .expect(res => {
+        .expect((res) => {
           assert.equal(res.body.title, 'post1');
           assert.equal(res.body.author, 'author1');
           assert.equal(res.body.body, 'body1');
