@@ -22,8 +22,12 @@ router.get('/posts/:post_id', (req, res) => {
 });
 
 router.post('/posts', urlencodedParser, (req, res) => {
-  postService.createNewPost(req.body.title, req.body.author, req.body.body).then(() => {
-    res.json({ message: 'Post Created!' });
+  postService.createNewPost(req.body.title, req.body.author, req.body.body).then((newPost) => {
+    res.json({
+      title: newPost.title,
+      author: newPost.author,
+      body: newPost.body,
+    });
   }).catch((err) => {
     res.status(503).send(err.message);
   });
