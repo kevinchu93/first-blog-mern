@@ -27,7 +27,7 @@ describe('postController', () => {
   beforeEach(() => {
     sinon.stub(postService, 'getAllPosts').resolves(mockPosts);
     sinon.stub(postService, 'getOnePost').resolves(mockPosts[0]);
-    sinon.stub(postService, 'createNewPost').resolves();
+    sinon.stub(postService, 'createNewPost').resolves(mockPosts[0]);
   });
 
   afterEach(() => {
@@ -114,7 +114,11 @@ describe('postController', () => {
         .post('/posts')
         .expect(200)
         .expect('Content-Type', /json/)
-        .expect(/Post Created/)
+        .expect((res) => {
+          assert.equal(res.body.title, 'post1');
+          assert.equal(res.body.author, 'author1');
+          assert.equal(res.body.body, 'body1');
+        })
     ));
     it('should return error when "postService.createNewPost" rejects', () => {
       postService.createNewPost.restore();
