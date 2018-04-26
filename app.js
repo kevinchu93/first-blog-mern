@@ -11,7 +11,7 @@ mongoose.connect('mongodb://test:test@ds257627.mlab.com:57627/first-blog-mern', 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-app.use('', postController);
+app.use('/api', postController);
 
 app.listen(3000);
 
