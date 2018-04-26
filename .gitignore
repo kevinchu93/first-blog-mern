@@ -73,5 +73,7 @@ Session.vim
 # auto-generated tag files
 tags
 
+# swagger
+swagger.yaml
 
 # End of https://www.gitignore.io/api/vim,node
