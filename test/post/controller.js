@@ -54,12 +54,15 @@ describe('postController', () => {
           assert.equal(res.body[0].title, 'post1');
           assert.equal(res.body[0].author, 'author1');
           assert.equal(res.body[0].body, 'body1');
+          assert.equal(res.body[0]._id, mockPosts[0]._id);
           assert.equal(res.body[1].title, 'post2');
           assert.equal(res.body[1].author, 'author2');
           assert.equal(res.body[1].body, 'body2');
+          assert.equal(res.body[1]._id, mockPosts[1]._id);
           assert.equal(res.body[2].title, 'post3');
           assert.equal(res.body[2].author, 'author3');
           assert.equal(res.body[2].body, 'body3');
+          assert.equal(res.body[2]._id, mockPosts[2]._id);
         })
     ));
     it('should return error when "postService.getAllPosts" rejects', () => {
@@ -88,6 +91,7 @@ describe('postController', () => {
           assert.equal(res.body.title, 'post1');
           assert.equal(res.body.author, 'author1');
           assert.equal(res.body.body, 'body1');
+          assert.equal(res.body._id, mockPosts[0]._id);
         })
     ));
     it('should return error when "postService.getOnePost" rejects', () => {
