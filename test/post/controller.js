@@ -51,17 +51,17 @@ describe('postController', () => {
         .expect(200)
         .expect('Content-Type', /json/)
         .expect((res) => {
-          assert.equal(res.body[0].title, 'post1');
-          assert.equal(res.body[0].author, 'author1');
-          assert.equal(res.body[0].body, 'body1');
+          assert.equal(res.body[0].title, mockPosts[0].title);
+          assert.equal(res.body[0].author, mockPosts[0].author);
+          assert.equal(res.body[0].body, mockPosts[0].body);
           assert.equal(res.body[0]._id, mockPosts[0]._id);
-          assert.equal(res.body[1].title, 'post2');
-          assert.equal(res.body[1].author, 'author2');
-          assert.equal(res.body[1].body, 'body2');
+          assert.equal(res.body[1].title, mockPosts[1].title);
+          assert.equal(res.body[1].author, mockPosts[1].author);
+          assert.equal(res.body[1].body, mockPosts[1].body);
           assert.equal(res.body[1]._id, mockPosts[1]._id);
-          assert.equal(res.body[2].title, 'post3');
-          assert.equal(res.body[2].author, 'author3');
-          assert.equal(res.body[2].body, 'body3');
+          assert.equal(res.body[2].title, mockPosts[2].title);
+          assert.equal(res.body[2].author, mockPosts[2].author);
+          assert.equal(res.body[2].body, mockPosts[2].body);
           assert.equal(res.body[2]._id, mockPosts[2]._id);
         })
     ));
@@ -88,9 +88,9 @@ describe('postController', () => {
         .expect(200)
         .expect('Content-Type', /json/)
         .expect((res) => {
-          assert.equal(res.body.title, 'post1');
-          assert.equal(res.body.author, 'author1');
-          assert.equal(res.body.body, 'body1');
+          assert.equal(res.body.title, mockPosts[0].title);
+          assert.equal(res.body.author, mockPosts[0].author);
+          assert.equal(res.body.body, mockPosts[0].body);
           assert.equal(res.body._id, mockPosts[0]._id);
         })
     ));
@@ -119,9 +119,9 @@ describe('postController', () => {
         .expect(200)
         .expect('Content-Type', /json/)
         .expect((res) => {
-          assert.equal(res.body.title, 'post1');
-          assert.equal(res.body.author, 'author1');
-          assert.equal(res.body.body, 'body1');
+          assert.equal(res.body.title, mockPosts[0].title);
+          assert.equal(res.body.author, mockPosts[0].author);
+          assert.equal(res.body.body, mockPosts[0].body);
         })
     ));
     it('should return error when "postService.createNewPost" rejects', () => {
