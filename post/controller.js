@@ -27,6 +27,7 @@ router.post('/posts', urlencodedParser, (req, res) => {
       title: newPost.title,
       author: newPost.author,
       body: newPost.body,
+      _id: newPost._id,
     });
   }).catch((err) => {
     res.status(503).send(err.message);
