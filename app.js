@@ -12,7 +12,7 @@ mongoose.connect(`mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
-app.use('', postController);
+app.use('/api', postController);
 
 app.listen(process.env.PORT || 3000);
 

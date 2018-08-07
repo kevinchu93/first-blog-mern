@@ -4,6 +4,7 @@ const postController = require('../../post/controller');
 const sinon = require('sinon');
 const postService = require('../../post/service');
 const Post = require('../../models/Post');
+const assert = require('assert');
 
 const app = express();
 
@@ -26,7 +27,7 @@ describe('postController', () => {
   beforeEach(() => {
     sinon.stub(postService, 'getAllPosts').resolves(mockPosts);
     sinon.stub(postService, 'getOnePost').resolves(mockPosts[0]);
-    sinon.stub(postService, 'createNewPost').resolves();
+    sinon.stub(postService, 'createNewPost').resolves(mockPosts[0]);
   });
 
   afterEach(() => {
@@ -35,37 +36,6 @@ describe('postController', () => {
     postService.createNewPost.restore();
   });
 
-  describe('GET /', () => {
-    it('should call method "postService.getAllPosts" with no arguments', () => (
-      request(app)
-        .get('/')
-        .expect(200)
-        .expect(() => {
-          sinon.assert.calledWith(postService.getAllPosts);
-        })
-    ));
-    it('should return resolved result of "postService.getAllPosts" to view', () => (
-      request(app)
-        .get('/')
-        .expect(200)
-        .expect(/post1/)
-        .expect(/author1/)
-        .expect(/body1/)
-        .expect(/post2/)
-        .expect(/author2/)
-        .expect(/body2/)
-        .expect(/post3/)
-        .expect(/author3/)
-        .expect(/body3/)
-    ));
-    it('should return error when "postService.getAllPosts" rejects', () => {
-      postService.getAllPosts.restore();
-      sinon.stub(postService, 'getAllPosts').rejects();
-      return request(app)
-        .get('/')
-        .expect(503);
-    });
-  });
   describe('GET /posts', () => {
     it('should call method "postService.getAllPosts" with no arguments', () => (
       request(app)
@@ -75,19 +45,25 @@ describe('postController', () => {
           sinon.assert.calledWith(postService.getAllPosts);
         })
     ));
-    it('should return resolved result of "postService.getAllPosts" to view', () => (
+    it('should return resolved result of "postService.getAllPosts" as json object', () => (
       request(app)
         .get('/posts')
         .expect(200)
-        .expect(/post1/)
-        .expect(/author1/)
-        .expect(/body1/)
-        .expect(/post2/)
-        .expect(/author2/)
-        .expect(/body2/)
-        .expect(/post3/)
-        .expect(/author3/)
-        .expect(/body3/)
+        .expect('Content-Type', /json/)
+        .expect((res) => {
+          assert.equal(res.body[0].title, mockPosts[0].title);
+          assert.equal(res.body[0].author, mockPosts[0].author);
+          assert.equal(res.body[0].body, mockPosts[0].body);
+          assert.equal(res.body[0]._id, mockPosts[0]._id);
+          assert.equal(res.body[1].title, mockPosts[1].title);
+          assert.equal(res.body[1].author, mockPosts[1].author);
+          assert.equal(res.body[1].body, mockPosts[1].body);
+          assert.equal(res.body[1]._id, mockPosts[1]._id);
+          assert.equal(res.body[2].title, mockPosts[2].title);
+          assert.equal(res.body[2].author, mockPosts[2].author);
+          assert.equal(res.body[2].body, mockPosts[2].body);
+          assert.equal(res.body[2]._id, mockPosts[2]._id);
+        })
     ));
     it('should return error when "postService.getAllPosts" rejects', () => {
       postService.getAllPosts.restore();
@@ -106,13 +82,17 @@ describe('postController', () => {
           sinon.assert.calledWith(postService.getOnePost, 'post_id');
         })
     ));
-    it('should return resolved result of "postService.getOnePost" to view', () => (
+    it('should return resolved result of "postService.getOnePost" as json object', () => (
       request(app)
         .get('/posts/post_id')
         .expect(200)
-        .expect(/post1/)
-        .expect(/author1/)
-        .expect(/body1/)
+        .expect('Content-Type', /json/)
+        .expect((res) => {
+          assert.equal(res.body.title, mockPosts[0].title);
+          assert.equal(res.body.author, mockPosts[0].author);
+          assert.equal(res.body.body, mockPosts[0].body);
+          assert.equal(res.body._id, mockPosts[0]._id);
+        })
     ));
     it('should return error when "postService.getOnePost" rejects', () => {
       postService.getOnePost.restore();
@@ -122,67 +102,34 @@ describe('postController', () => {
         .expect(503);
     });
   });
-  describe('GET /post_new', () => {
-    it('should return "post_new" view', () => (
-      request(app)
-        .get('/post_new')
-        .expect(200)
-        .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/New Post/)
-    ));
-  });
   describe('POST /post_new', () => {
     it('should call method "postService.createNewPost" with correct arguments', () => (
       request(app)
-        .post('/post_new')
+        .post('/posts')
         .type('form')
         .send({ title: 'title', author: 'author', body: 'body' })
-        .expect(302)
+        .expect(200)
         .expect(() => {
           sinon.assert.calledWith(postService.createNewPost, 'title', 'author', 'body');
         })
     ));
-    it('should redirect to "posts" view after creating post', () => (
+    it('should output correct json object after creating post', () => (
       request(app)
-        .post('/post_new')
-        .expect(302)
-        .expect('Location', 'posts')
+        .post('/posts')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect((res) => {
+          assert.equal(res.body.title, mockPosts[0].title);
+          assert.equal(res.body.author, mockPosts[0].author);
+          assert.equal(res.body.body, mockPosts[0].body);
+        })
     ));
     it('should return error when "postService.createNewPost" rejects', () => {
       postService.createNewPost.restore();
       sinon.stub(postService, 'createNewPost').rejects();
       return request(app)
-        .post('/post_new')
+        .post('/posts')
         .expect(503);
     });
-  });
-
-  // Nav Tests
-  describe('GET /', () => {
-    it('should respond with homepage', () => (
-      request(app)
-        .get('/')
-        .expect(200)
-        .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/My First Blog/)
-    ));
-  });
-  describe('GET /posts', () => {
-    it('should respond with homepage', () => (
-      request(app)
-        .get('/posts')
-        .expect(200)
-        .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/My First Blog/)
-    ));
-  });
-  describe('GET /posts/:post_id', () => {
-    it('should respond with post detail', () => (
-      request(app)
-        .get('/posts/post_id')
-        .expect(200)
-        .expect('Content-Type', 'text/html; charset=utf-8')
-        .expect(/My First Blog/)
-    ));
   });
 });
