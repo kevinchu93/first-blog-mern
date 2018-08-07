@@ -45,7 +45,7 @@ const options = {
       'https',
     ],
     consumes: ['application/json'],
-    produces: ['applicataion/json'],
+    produces: ['application/json'],
   },
   apis: ['./post/controller.js'], // Path to the API docs
 };
