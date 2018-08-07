@@ -9,7 +9,7 @@ const app = express();
 
 mongoose.Promise = require('bluebird');
 
-mongoose.connect(`mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@ds257627.mlab.com:57627/first-blog-mern`, { useMongoClient: true });
+mongoose.connect(`mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASS}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE}`, { useMongoClient: true });
 
 app.use(cors());
 
@@ -58,6 +58,6 @@ app.get('/api/docs', (req, res) => {
   res.send(swaggerSpec);
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 
 module.exports = app;

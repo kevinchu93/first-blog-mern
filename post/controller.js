@@ -51,7 +51,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 router.get(['/', '/posts'], (req, res) => {
   postService.getAllPosts().then((posts) => {
-    res.render('posts', { posts });
+    res.json(posts);
   }).catch((err) => {
     res.status(503).send(err.message);
   });
@@ -84,7 +84,7 @@ router.get(['/', '/posts'], (req, res) => {
 
 router.get('/posts/:post_id', (req, res) => {
   postService.getOnePost(req.params.post_id).then((post) => {
-    res.render('post_detail', { post });
+    res.json(post);
   }).catch((err) => {
     res.status(503).send(err.message);
   });
