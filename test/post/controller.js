@@ -105,30 +105,19 @@ describe('postController', () => {
   describe('POST /post_new', () => {
     it('should call method "postService.createNewPost" with correct arguments', () => (
       request(app)
-        .post('/posts')
+        .post('/post_new')
         .type('form')
         .send({ title: 'title', author: 'author', body: 'body' })
-        .expect(200)
+        .expect(302)
         .expect(() => {
           sinon.assert.calledWith(postService.createNewPost, 'title', 'author', 'body');
-        })
-    ));
-    it('should output correct json object after creating post', () => (
-      request(app)
-        .post('/posts')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .expect((res) => {
-          assert.equal(res.body.title, mockPosts[0].title);
-          assert.equal(res.body.author, mockPosts[0].author);
-          assert.equal(res.body.body, mockPosts[0].body);
         })
     ));
     it('should return error when "postService.createNewPost" rejects', () => {
       postService.createNewPost.restore();
       sinon.stub(postService, 'createNewPost').rejects();
       return request(app)
-        .post('/posts')
+        .post('/post_new')
         .expect(503);
     });
   });
